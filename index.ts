@@ -189,16 +189,11 @@ bot.start((ctx) => ctx.reply(`Your chat ID is ${ctx.chat.id}, person id is ${ctx
 
 for (const command of triggerCommands) {
     bot.command(command, (ctx) => {
-        if (String(ctx.from.id) === OWNER_ID) return sendTravelTime(ctx.chat.id);
+        return sendTravelTime(ctx.chat.id);
     });
 }
 
 bot.inlineQuery(/.*/, async (ctx) => {
-    if (String(ctx.from.id) !== OWNER_ID) {
-        await ctx.answerInlineQuery([], { is_personal: true, cache_time: 30 });
-        return;
-    }
-
     const q = ctx.inlineQuery.query.trim().toLowerCase();
     if (!triggerCommands.includes(q as (typeof triggerCommands)[number]) && q !== '') {
         await ctx.answerInlineQuery(
